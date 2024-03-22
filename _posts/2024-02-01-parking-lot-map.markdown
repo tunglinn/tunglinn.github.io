@@ -1,8 +1,13 @@
 ---
-layout: post
-title:  "Parking Lot Map"
-date:   2024-02-01 00:25:47 -0800
-categories: jekyll update
+layout: default
+modal-id: 1
+date: 2024-02-01
+img: parking-lot-map.png
+alt: image-alt
+project-date: January 2024
+client: Parking Reform Network
+category: Web Development
+description: Implemented data updates and UX improvements.
 ---
 **[The Project][parking-lot-map]** 
 
@@ -11,7 +16,7 @@ Improved user experience, optimized data loading, and automated data insertion. 
 - How to design for the user and improve their experience
 
 **The Details.**
-
+Working in Progress.
 
 **Takeaways.** While I learned so many technical aspects of web development, UX, and data visualization, my biggest takeaway is how to truly understand the process, which required me to develop the skill of self-learning effectively. It's also about the habits I build, like writing documentation, industry standard programming, and acheiving broader understanding.
 

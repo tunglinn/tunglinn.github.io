@@ -1,11 +1,14 @@
 ---
-layout: post
-title:  "Parking Reform Map"
-date:   2024-02-01 00:25:47 -0800
-categories: jekyll update
+layout: default
+modal-id: 0
+date: 2024-02-01
+img: parking-reform-map.webp
+alt: image-alt
+project-date: April 2014
+client: Parking Reform Network
+category: Web Development
+description: From rookie to savvy, I worked on a full-stack map migration project.
 ---
-*Before I started this, I had little web development knowledge and experience.*
-
 **[The Project][reform-map]** 
 
 A map migration from Shiny(R) to JavaScript. Here's a comprehensive list of everything I learned:
