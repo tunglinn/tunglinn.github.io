@@ -1,10 +1,11 @@
 ---
 layout: default
 modal-id: 1
-date: 2024-02-01
+date: 2023-12-15
 img: parking-lot-map.png
 alt: image-alt
-project-date: January 2024
+project-date: December 2023
+type: main
 client: Parking Reform Network
 category: Web Development
 description: Implemented data updates and UX improvements.

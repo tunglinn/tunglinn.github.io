@@ -1,10 +1,11 @@
 ---
 layout: default
 modal-id: 0
-date: 2024-02-01
-img: parking-reform-map.webp
+date: 2023-06-15
+img: parking-reform-map.jpg
 alt: image-alt
-project-date: April 2014
+project-date: June 2023
+type: main
 client: Parking Reform Network
 category: Web Development
 description: From rookie to savvy, I worked on a full-stack map migration project.
