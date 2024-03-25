@@ -1,0 +1,13 @@
+---
+layout: default
+modal-id: 5
+date: 2022-06-15
+img: ambulife.jpg
+alt: image-alt
+project-date: June 2022
+type: misc
+client: Ambulife Ambulance
+category: Patient Care, Documentation
+description: Worked as an EMT-B for over a year.
+---
+
