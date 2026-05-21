@@ -1,0 +1,50 @@
+backend:
+  name: github
+  repo: tunglinn/tunglinn.github.io
+  branch: gh-pages
+  auth_type: pkce
+  app_id: Ov23lixDlWOoQLzBeYOn
+
+# Where uploaded media is stored
+media_folder: img/uploads
+public_folder: /img/uploads
+
+collections:
+  - name: portfolio
+    label: Portfolio Projects
+    folder: _posts
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    filter:
+      field: type
+      value: main
+    fields:
+      - { label: Layout,        name: layout,       widget: hidden, default: default }
+      - { label: Title,         name: title,        widget: string }
+      - { label: Modal ID,      name: modal-id,     widget: number, value_type: int }
+      - { label: Date,          name: date,         widget: datetime }
+      - { label: Thumbnail,     name: img,          widget: image }
+      - { label: Alt Text,      name: alt,          widget: string }
+      - { label: Project Date,  name: project-date, widget: string }
+      - { label: Type,          name: type,         widget: hidden, default: main }
+      - { label: Category,      name: category,     widget: string }
+      - { label: Description,   name: description,  widget: text }
+      - { label: Body,          name: body,         widget: markdown }
+
+  - name: misc
+    label: Misc Projects
+    folder: _posts/misc
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: Layout,        name: layout,       widget: hidden, default: default }
+      - { label: Title,         name: title,        widget: string }
+      - { label: Modal ID,      name: modal-id,     widget: number, value_type: int }
+      - { label: Date,          name: date,         widget: datetime }
+      - { label: Thumbnail,     name: img,          widget: image }
+      - { label: Alt Text,      name: alt,          widget: string }
+      - { label: Project Date,  name: project-date, widget: string }
+      - { label: Type,          name: type,         widget: hidden, default: misc }
+      - { label: Category,      name: category,     widget: string }
+      - { label: Description,   name: description,  widget: text }
+      - { label: Body,          name: body,         widget: markdown }
