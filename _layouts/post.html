@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+{% include head.html %}
+
+<body class="bg-cyber-bg text-on-surface font-mono">
+
+  <!-- Atmospheric background -->
+  <div class="fixed inset-0 pointer-events-none z-0"
+       style="background-image: linear-gradient(to right, rgba(227,253,255,0.03) 1px, transparent 1px);
+              background-size: 8.3333% 100%;"></div>
+
+  <!-- ═══════════════════════════════════════
+       HUD NAVBAR
+  ═══════════════════════════════════════ -->
+  <header class="fixed top-0 left-0 right-0 z-40"
+          style="background: rgba(10,10,11,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,220,230,0.1);">
+    <nav class="flex justify-between items-center px-6 py-4 max-w-6xl mx-auto">
+      <a href="/"
+         class="text-primary font-bold uppercase tracking-tight text-base hover:text-accent transition-colors"
+         style="letter-spacing: 0.05em;">
+        {{ site.title | upcase | replace: " ", "_" }}_v2.0
+      </a>
+
+      <div class="flex items-center gap-5">
+        <a href="/" class="text-[11px] text-muted hover:text-primary transition-colors uppercase tracking-widest">
+          ← INDEX
+        </a>
+        <a href="https://github.com/tunglinn" target="_blank" rel="noopener"
+           class="text-[11px] text-muted hover:text-primary transition-colors uppercase tracking-widest">GH</a>
+        <a href="https://linkedin.com/in/tung-lin" target="_blank" rel="noopener"
+           class="text-[11px] text-muted hover:text-primary transition-colors uppercase tracking-widest">LI</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ═══════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════ -->
+  <main class="relative z-10 pt-28 pb-28 px-6 max-w-5xl mx-auto">
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-[10px] text-muted uppercase tracking-widest mb-10">
+      <a href="/" class="hover:text-primary transition-colors">ROOT</a>
+      <span class="text-muted">›</span>
+      {% if page.type == "main" %}
+        <span class="text-primary">PROJECTS</span>
+      {% elsif page.type == "misc" %}
+        <span style="color:#ff0090;">LOGS</span>
+      {% else %}
+        <span style="color:#9b5de5;">IDENTITY</span>
+      {% endif %}
+      <span class="text-muted">›</span>
+      <span class="text-on-surface">{{ page.title }}</span>
+    </div>
+
+    <!-- Post header -->
+    <section class="mb-12" style="border-left: 3px solid
+      {% if page.type == 'misc' %}#ff0090{% elsif page.type == 'about' %}#9b5de5{% else %}#00dce6{% endif %};
+      padding-left: 1.5rem;">
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <div class="text-[9px] text-muted uppercase tracking-[0.2em] mb-2">
+            {% if page.type == "main" %}// project{% elsif page.type == "misc" %}// log{% else %}// record{% endif %}
+          </div>
+          <h1 class="font-bold text-2xl md:text-3xl text-on-surface uppercase tracking-tight mb-4"
+              style="letter-spacing: 0.06em; line-height: 1.15;">
+            {{ page.title }}
+          </h1>
+          <div class="flex flex-wrap gap-6 text-[11px] uppercase">
+            {% if page.project-date or page.date %}
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[9px] text-muted">DATE</span>
+              <span class="text-on-surface">{{ page.project-date | default: page.date | date: "%B %Y" }}</span>
+            </div>
+            {% endif %}
+            {% if page.category %}
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[9px] text-muted">DOMAIN</span>
+              <span class="text-on-surface">{{ page.category }}</span>
+            </div>
+            {% endif %}
+            {% if page.client %}
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[9px] text-muted">CLIENT</span>
+              <span class="text-on-surface">{{ page.client }}</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="flex-shrink-0">
+          <a href="/" class="glass-panel flex items-center gap-2 px-5 py-2.5 text-[11px] uppercase tracking-widest
+                             text-primary hover:bg-primary/10 transition-all duration-200"
+             style="border: 1px solid rgba(0,220,230,0.2);">
+            ← RETURN_TO_ROOT
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Post image (if available) -->
+    {% if page.img %}
+    <section class="mb-12">
+      <div class="relative w-full overflow-hidden glass-panel"
+           style="border: 1px solid rgba(0,220,230,0.12); aspect-ratio: 16/7;">
+        <div class="absolute top-3 left-3 text-[9px] text-primary uppercase tracking-widest z-10 px-2 py-1"
+             style="background: rgba(10,10,11,0.7); border: 1px solid rgba(0,220,230,0.15);">
+          IMG_NODE_01
+        </div>
+        <img src="{{ '/img/portfolio/' | append: page.img | relative_url }}"
+             alt="{{ page.alt | default: page.title }}"
+             class="w-full h-full object-cover"
+             style="opacity: 0.85; mix-blend-mode: screen; transition: transform 2s ease;"
+             onmouseover="this.style.transform='scale(1.03)'"
+             onmouseout="this.style.transform='scale(1)'">
+        <div class="absolute inset-0"
+             style="background: linear-gradient(to top, rgba(10,10,11,0.6) 0%, transparent 50%);"></div>
+        {% if page.description %}
+        <div class="absolute bottom-4 left-4 right-4">
+          <p class="text-[12px] text-on-dim" style="font-family: 'Inter', sans-serif;">
+            {{ page.description }}
+          </p>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- Content grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-10">
+
+      <!-- Sidebar -->
+      <aside class="md:col-span-4 space-y-8">
+
+        <!-- Category tags -->
+        {% if page.category %}
+        <div class="glass-panel p-5" style="border: 1px solid rgba(0,220,230,0.1);">
+          <div class="text-[9px] text-primary uppercase tracking-[0.2em] mb-4">TECH_DOMAIN</div>
+          <div class="flex flex-wrap gap-2">
+            {% assign tags = page.category | split: ", " %}
+            {% for tag in tags %}
+            <span class="px-3 py-1 text-[10px] text-primary uppercase tracking-wide"
+                  style="border: 1px solid rgba(0,220,230,0.25); background: rgba(0,220,230,0.05);">
+              {{ tag }}
+            </span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Meta info -->
+        <div style="border-top: 1px solid rgba(0,220,230,0.1); padding-top: 1.5rem;">
+          <div class="text-[9px] text-primary uppercase tracking-[0.2em] mb-4">RECORD_META</div>
+          <div class="space-y-3 text-[11px]">
+            {% if page.type %}
+            <div class="flex justify-between items-center">
+              <span class="text-muted uppercase tracking-wide">TYPE</span>
+              <span class="text-on-surface uppercase">{{ page.type }}</span>
+            </div>
+            {% endif %}
+            {% if page.date %}
+            <div class="flex justify-between items-center">
+              <span class="text-muted uppercase tracking-wide">DATE</span>
+              <span class="text-on-surface">{{ page.date | date: "%Y-%m-%d" }}</span>
+            </div>
+            {% endif %}
+            {% if page.client %}
+            <div class="flex justify-between items-center">
+              <span class="text-muted uppercase tracking-wide">CLIENT</span>
+              <span class="text-on-surface text-right" style="max-width: 60%;">{{ page.client }}</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Navigation: prev/next posts -->
+        <div style="border-top: 1px solid rgba(0,220,230,0.1); padding-top: 1.5rem;">
+          <div class="text-[9px] text-primary uppercase tracking-[0.2em] mb-4">NODE_TRAVERSAL</div>
+          {% assign all_posts = site.posts %}
+          {% for p in all_posts %}
+            {% if p.url == page.url %}
+              {% assign idx = forloop.index0 %}
+            {% endif %}
+          {% endfor %}
+          {% if idx > 0 %}
+            {% assign prev_idx = idx | minus: 1 %}
+            {% assign prev_post = all_posts[prev_idx] %}
+            <a href="{{ prev_post.url }}"
+               class="block text-[10px] text-muted hover:text-primary transition-colors mb-2 uppercase tracking-wide">
+              ← {{ prev_post.title | default: "prev" | truncate: 24, "…" }}
+            </a>
+          {% endif %}
+          {% assign next_idx = idx | plus: 1 %}
+          {% assign next_post = all_posts[next_idx] %}
+          {% if next_post %}
+            <a href="{{ next_post.url }}"
+               class="block text-[10px] text-muted hover:text-primary transition-colors uppercase tracking-wide">
+              {{ next_post.title | default: "next" | truncate: 24, "…" }} →
+            </a>
+          {% endif %}
+        </div>
+
+      </aside><!-- /sidebar -->
+
+      <!-- Main prose -->
+      <article class="md:col-span-8">
+        <div class="post-prose">
+          {{ content }}
+        </div>
+      </article>
+
+    </div><!-- /grid -->
+
+  </main>
+
+  {% include footer.html %}
+
+  <script>
+    // Subtle mouse atmosphere
+    document.addEventListener('mousemove', function (e) {
+      var x = (e.clientX / window.innerWidth  * 100).toFixed(1);
+      var y = (e.clientY / window.innerHeight * 100).toFixed(1);
+      document.body.style.backgroundImage =
+        'radial-gradient(ellipse at ' + x + '% ' + y + '%, rgba(0,220,230,0.025) 0%, transparent 55%)';
+    });
+  </script>
+
+</body>
+</html>

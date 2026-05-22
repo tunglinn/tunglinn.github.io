@@ -1,13 +1,14 @@
 ---
-layout: default
+layout: post
+title: Silicon Valley Bike Exchange
 modal-id: 6
 date: 2022-06-15
 img: bikex.jpg
-alt: image-alt
+alt: Silicon Valley Bike Exchange volunteer event
 project-date: October 2023
 type: misc
 client: Silicon Valley Bike Exchange
-category: Bike Repair
-description: Volunteered at BikeX, repairing donated bikes and staffing local community repair events.
+category: Community, Bike Repair
+description: Volunteered repairing donated bikes and staffing local community repair events.
 ---
 

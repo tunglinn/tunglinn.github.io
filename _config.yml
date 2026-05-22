@@ -1,12 +1,25 @@
 # Site settings
 title: Tung Lin
-header: Tung's Website
+header: Tung Lin
 email: tunglin@yahoo.com
-url: https://github.com/tunglinn
-description: "Tung Lin's portfolio of web, data, transportation, and other miscellaneous projects."
-keywords: "transportation data, transit planning, web development, data visualization"
-skills: "Web Developer - Data Analyst - Transportation Enthusiast"
-meta_author: Lin Tung
+url: https://tunglinn.github.io
+description: "Portfolio of Tung Lin — data analyst and transportation enthusiast specializing in transit planning, data visualization, and web development."
+keywords: "transportation data, transit planning, web development, data visualization, GIS, parking reform"
+skills: "data_analyst --mode=transportation --stack=web"
+meta_author: Tung Lin
+
+# SEO (jekyll-seo-tag)
+author:
+  name: Tung Lin
+  email: tunglin@yahoo.com
+logo: /img/profile.png
+social:
+  name: Tung Lin
+  links:
+    - https://www.linkedin.com/in/tung-lin/
+    - https://github.com/tunglinn
+twitter:
+  card: summary_large_image
 
 # Google webmaster tools
 google_verify:
@@ -15,53 +28,58 @@ google_verify:
 bing_verify:
 
 # Contact form:
-# - static : pass through formspree.io to validate email sending
+# - static : pass through formspree.io to validate email sending
 # - disqus : replace contact form by disqus thread
-# - comment the line below if you want to stick with the default PHP contact form
 contact: static
 
 # If you use disqus you need disqus shortname
-# https://help.disqus.com/customer/portal/articles/466208
 disqus_shortname: tunglin
 
 # Color settings (hex-codes without the leading hash-tag)
 color:
-  primary: 7ed0fc #80B3FF
-  primary-rgb: "24,288,156" #"128,179,255"
-  secondary: 2c3e50 #FD6E8A
-  secondary-dark: 233140 #A2122F
+  primary: 00ff88
+  primary-rgb: "0,255,136"
+  secondary: ff0090
+  secondary-dark: 0a0a0f
 
 # Footer settings
 footer:
   copyright: Tung Lin
-  location: Where Am I?
-  social: Around the Web
-  credits: Credits
+  location: Location
+  social: Connect
+  credits: Built With
 
-# Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
-social:
+# Social networks
+social_links:
   - title: linkedin
     url: https://www.linkedin.com/in/tung-lin/
   - title: github
     url: https://github.com/tunglinn
 
-# Postal address (add as many lines as necessary)
+# Postal address
 address:
   - line: Taipei, Taiwan
   - line: Cupertino, California
   - line: Los Angeles, California
 
 # Credits content
-credits: 'Freelancer is a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com">Start Bootstrap</a>.'
+credits: 'Jekyll + GitHub Pages'
 
 # Build settings
 markdown: kramdown
 permalink: pretty
 
-#for posts
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Defaults
 defaults:
   - scope:
       path: ""
       type: "posts"
     values:
-      permalink: ""
+      layout: "post"
+      permalink: "/:title/"

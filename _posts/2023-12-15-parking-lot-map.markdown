@@ -1,14 +1,15 @@
 ---
-layout: default
+layout: post
+title: Parking Lot Map
 modal-id: 1
 date: 2023-12-15
 img: parking-lot-map.png
-alt: image-alt
+alt: Parking lot map visualization
 project-date: December 2023
 type: main
 client: Parking Reform Network
-category: Web Development
-description: Implemented data updates and UX improvements.
+category: Web Development, UX, Python
+description: Data pipeline automation and UX improvements for the parking lot map tool.
 ---
 **[The Project][parking-lot-map]** 
 

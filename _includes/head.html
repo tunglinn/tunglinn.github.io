@@ -1,35 +1,72 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>{{ site.header }}</title>
-  <meta name="viewport" content="width=device-width">
-  <meta name="description" content="{{ site.description }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0A0A0B">
+
+  {% seo %}
+
   <meta name="keywords" content="{{ site.keywords }}" />
-  {% if site.meta_author %}
-  <meta name="author" content="{{ site.meta_author }}">{% endif %}
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.url }}">
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="feed.xml">
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }} RSS Feed" href="/feed.xml">
 
-  <!-- Custom CSS & Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-  <link rel="stylesheet" href="{{ " style.css" }}">
+  <!-- Tailwind CSS CDN (JIT, scans DOM at runtime) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'primary':      '#00dce6',
+            'primary-dim':  '#007a80',
+            'secondary':    '#ff0090',
+            'accent':       '#00ff88',
+            'nv':           '#9b5de5',
+            'muted':        '#849495',
+            'on-surface':   '#e0e2e8',
+            'on-dim':       '#b9cacb',
+            'surface':      '#101417',
+            'surface-high': '#1c2024',
+            'cyber-bg':     '#0A0A0B',
+          },
+          fontFamily: {
+            'mono': ['"JetBrains Mono"', 'Fira Code', 'monospace'],
+            'body': ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
 
-  <!-- Google verification -->
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Custom cyberpunk CSS -->
+  <link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
+
   {% if site.google_verify %}
-  <meta name="google-site-verification" content="{{ site.google_verify }}">{% endif %}
-
-  <!-- Bing Verification -->
+  <meta name="google-site-verification" content="{{ site.google_verify }}">
+  {% endif %}
   {% if site.bing_verify %}
-  <meta name="msvalidate.01" content="{{ site.bing_verify }}">{% endif %}
+  <meta name="msvalidate.01" content="{{ site.bing_verify }}">
+  {% endif %}
 
-  <!-- Custom Fonts -->
-  <link rel="stylesheet" href="{{ " css/font-awesome/css/all.min.css" }}">
-  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-  <link href="//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "{{ site.title }}",
+    "url": "{{ site.url }}",
+    "email": "{{ site.email }}",
+    "jobTitle": "Data Analyst & Transportation Enthusiast",
+    "sameAs": [
+      "https://www.linkedin.com/in/tung-lin/",
+      "https://github.com/tunglinn"
+    ],
+    "knowsAbout": ["Transportation Planning", "Data Visualization", "Web Development", "GIS", "Transit Analysis"]
+  }
+  </script>
 </head>

@@ -1,14 +1,15 @@
 ---
-layout: default
+layout: post
+title: Parking Database
 modal-id: 3
 date: 2023-03-01
 img: parking-database.webp
-alt: image-alt
+alt: Parking code database interface
 project-date: March 2023
 type: main
 client: Parking Reform Network
-category: Database Development and Management
-description: Populated a new parking code database.
+category: Database Development, Data Management
+description: Designed and populated a new parking code database for the Parking Reform Network.
 ---
 **The Project** 
 

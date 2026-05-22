@@ -1,14 +1,15 @@
 ---
-layout: default
+layout: post
+title: Parking Reform Map
 modal-id: 0
 date: 2023-06-15
 img: parking-reform-map.jpg
-alt: image-alt
+alt: Parking Reform Network interactive map
 project-date: June 2023
 type: main
 client: Parking Reform Network
 category: Web Development
-description: From rookie to savvy, I worked on a full-stack map migration project.
+description: Full-stack map migration from Shiny (R) to JavaScript — Leaflet, CI/CD, and UX overhaul.
 ---
 **[The Project][reform-map]** 
 

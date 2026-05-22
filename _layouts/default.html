@@ -1,19 +1,448 @@
 <!DOCTYPE html>
-<html>
+<html class="dark" lang="en">
 {% include head.html %}
 
-<body id="page-top" class="index">
-  {% include nav.html %}
-  {% include header.html %}
-  {% include portfolio_grid.html %}
-  {% include misc_grid.html %}
-  {% include about.html %}
+<body class="graph-page bg-cyber-bg text-on-surface font-mono">
 
-  {% include contact_plain.html%}
+  <!-- Atmospheric background -->
+  <div class="fixed inset-0 grid-overlay pointer-events-none z-0"></div>
+  <div class="scanline"></div>
+
+  <!-- ═══════════════════════════════════════
+       HUD NAVBAR
+  ═══════════════════════════════════════ -->
+  <header class="fixed top-0 left-0 right-0 z-40"
+          style="background: rgba(10,10,11,0.88); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,220,230,0.12);">
+    <nav class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+
+      <div class="text-primary font-bold tracking-tight uppercase text-base glitch select-none"
+           style="letter-spacing: 0.05em;">
+        {{ site.title | upcase | replace: " ", "_" }}_v2.0
+      </div>
+
+      <div class="hidden md:flex items-center gap-6 text-[11px] uppercase tracking-widest text-muted select-none">
+        <span>// navigate the graph</span>
+      </div>
+
+      <div class="flex items-center gap-5">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+          <span class="text-[10px] text-muted uppercase tracking-widest">ONLINE</span>
+        </div>
+        <a href="https://github.com/tunglinn" target="_blank" rel="noopener"
+           class="text-[11px] text-muted hover:text-primary transition-colors uppercase tracking-widest">GH</a>
+        <a href="https://linkedin.com/in/tung-lin" target="_blank" rel="noopener"
+           class="text-[11px] text-muted hover:text-primary transition-colors uppercase tracking-widest">LI</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ═══════════════════════════════════════
+       HUD CORNER PANELS (desktop only)
+  ═══════════════════════════════════════ -->
+  <div class="hidden md:block fixed bottom-28 left-6 z-30 pointer-events-none">
+    <div class="glass-panel clipped-corner p-4" style="min-width: 180px;">
+      <div class="text-[9px] text-primary uppercase tracking-[0.18em] mb-2">sys_status</div>
+      <div class="flex items-center gap-2 mb-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+        <span class="text-[11px] text-on-surface">NODE_MAP: ACTIVE</span>
+      </div>
+      {% assign post_count = site.posts | size %}
+      <div class="text-[11px] text-muted">{{ post_count }}&nbsp;RECORDS_INDEXED</div>
+      <div class="text-[11px] text-muted mt-0.5">UPTIME:&nbsp;∞</div>
+    </div>
+  </div>
+
+  <div class="hidden md:block fixed bottom-28 right-6 z-30 pointer-events-none text-right">
+    <div class="glass-panel p-4" style="min-width: 190px;">
+      <div class="text-[9px] text-primary uppercase tracking-[0.18em] mb-2">terminal_out</div>
+      <div class="text-[11px] text-muted">&gt;&gt; SCANNING_NODES... [OK]</div>
+      <div class="text-[11px] text-muted">&gt;&gt; MAPPING_GRAPH... [OK]</div>
+      <div class="text-[11px] text-primary">&gt;&gt; ACCESS_GRANTED</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       DESKTOP: INTERACTIVE GRAPH
+  ═══════════════════════════════════════ -->
+  <main id="graph-main" class="relative w-full h-screen" aria-label="Site navigation graph">
+
+    <!-- SVG layer for connecting lines -->
+    <svg id="graph-svg" class="absolute inset-0 w-full h-full pointer-events-none z-10"
+         xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="line-glow">
+          <feGaussianBlur stdDeviation="1.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <g id="graph-lines" filter="url(#line-glow)"></g>
+    </svg>
+
+    <!-- Nodes layer (slides to focus on hovered node) -->
+    <div id="nodes-container" class="absolute inset-0">
+
+      <!-- ─────────────────────────────────
+           ROOT NODE — diamond, cyan
+      ───────────────────────────────── -->
+      <div class="graph-node z-20 select-none" id="node-root" data-x="0" data-y="0"
+           style="transform: translate(-50%, -50%);">
+        <div class="node-root-inner w-24 h-24 border-2 border-primary flex items-center justify-center"
+             style="background: rgba(0,220,230,0.07);">
+          <div style="transform: rotate(-45deg); text-align: center; line-height: 1.2;">
+            <div class="text-primary font-bold text-[10px] tracking-[0.2em]">TUNG</div>
+            <div class="text-primary font-bold text-[10px] tracking-[0.2em]">LIN</div>
+          </div>
+        </div>
+        <div class="absolute left-1/2 text-[9px] text-primary uppercase tracking-[0.18em] whitespace-nowrap text-glow-cyan"
+             style="bottom: -1.75rem; transform: translateX(-50%);">SYSTEM_ROOT</div>
+      </div>
+
+      <!-- ─────────────────────────────────
+           PROJECTS NODE — circle, cyan
+           Position: (-290px, -115px) from center
+      ───────────────────────────────── -->
+      <div class="graph-node z-20 node-category" id="node-projects" data-x="-290" data-y="-115"
+           style="transform: translate(calc(-50% - 290px), calc(-50% - 115px));">
+        <div class="relative group cursor-pointer" title="Projects">
+          <div class="w-16 h-16 rounded-full border-2 border-primary flex items-center justify-center
+                      transition-all duration-300 group-hover:scale-110 group-hover:glow-cyan"
+               style="background: rgba(0,220,230,0.06);">
+            <!-- folder / code icon -->
+            <svg class="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2 6a2 2 0 012-2h5l2 2h9a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+            </svg>
+          </div>
+          <div class="absolute left-1/2 text-[9px] text-primary uppercase tracking-[0.18em] whitespace-nowrap text-glow-cyan"
+               style="top: -1.75rem; transform: translateX(-50%);">PROJECTS</div>
+        </div>
+      </div>
+
+      <!-- PROJECTS leaf nodes -->
+      {% assign main_posts = site.posts | where: "type", "main" | sort: "date" | reverse %}
+      {% for post in main_posts limit: 4 %}
+        {% assign i = forloop.index0 %}
+        {% if i == 0 %}{% assign lx = "calc(-50% - 480px)" %}{% assign ly = "calc(-50% - 60px)" %}{% endif %}
+        {% if i == 1 %}{% assign lx = "calc(-50% - 460px)" %}{% assign ly = "calc(-50% - 165px)" %}{% endif %}
+        {% if i == 2 %}{% assign lx = "calc(-50% - 400px)" %}{% assign ly = "calc(-50% - 255px)" %}{% endif %}
+        {% if i == 3 %}{% assign lx = "calc(-50% - 300px)" %}{% assign ly = "calc(-50% - 300px)" %}{% endif %}
+        <div class="graph-node z-20 leaf-node" data-parent="projects"
+             style="transform: translate({{ lx }}, {{ ly }});">
+          <a href="{{ post.url }}" class="holo-leaf">
+            {% if post.img %}
+            <div class="holo-img-wrap">
+              <img src="{{ '/img/portfolio/' | append: post.img | relative_url }}"
+                   alt="{{ post.title }}" class="holo-img" loading="lazy">
+              <div class="holo-overlay"></div>
+              <div class="holo-scan"></div>
+            </div>
+            {% endif %}
+            <div class="holo-label">
+              <span class="holo-dot"></span>
+              <span class="holo-title">{{ post.title | default: post.slug | truncate: 20, "" }}</span>
+            </div>
+            {% if post.category %}
+            <div class="holo-meta">{{ post.category | split: ", " | first }}</div>
+            {% endif %}
+          </a>
+        </div>
+      {% endfor %}
+
+      <!-- ─────────────────────────────────
+           LOGS NODE — square, magenta
+           Position: (+295px, -85px) from center
+      ───────────────────────────────── -->
+      <div class="graph-node z-20 node-category" id="node-logs" data-x="295" data-y="-85"
+           style="transform: translate(calc(-50% + 295px), calc(-50% - 85px));">
+        <div class="relative group cursor-pointer" title="Logs">
+          <div class="w-16 h-16 border-2 flex items-center justify-center
+                      transition-all duration-300 group-hover:scale-110"
+               style="border-color: #ff0090; background: rgba(255,0,144,0.06);">
+            <!-- terminal / log icon -->
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#ff0090" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"/>
+            </svg>
+          </div>
+          <div class="absolute left-1/2 text-[9px] uppercase tracking-[0.18em] whitespace-nowrap text-glow-magenta"
+               style="top: -1.75rem; transform: translateX(-50%); color: #ff0090;">LOGS</div>
+        </div>
+      </div>
+
+      <!-- LOGS leaf nodes -->
+      {% assign misc_posts = site.posts | where: "type", "misc" | sort: "date" | reverse %}
+      {% for post in misc_posts limit: 4 %}
+        {% assign i = forloop.index0 %}
+        {% if i == 0 %}{% assign lx = "calc(-50% + 450px)" %}{% assign ly = "calc(-50% - 15px)" %}{% endif %}
+        {% if i == 1 %}{% assign lx = "calc(-50% + 460px)" %}{% assign ly = "calc(-50% - 120px)" %}{% endif %}
+        {% if i == 2 %}{% assign lx = "calc(-50% + 410px)" %}{% assign ly = "calc(-50% - 215px)" %}{% endif %}
+        {% if i == 3 %}{% assign lx = "calc(-50% + 320px)" %}{% assign ly = "calc(-50% - 265px)" %}{% endif %}
+        <div class="graph-node z-20 leaf-node" data-parent="logs"
+             style="transform: translate({{ lx }}, {{ ly }});">
+          <a href="{{ post.url }}" class="holo-leaf holo-leaf--logs">
+            {% if post.img %}
+            <div class="holo-img-wrap">
+              <img src="{{ '/img/portfolio/' | append: post.img | relative_url }}"
+                   alt="{{ post.title }}" class="holo-img" loading="lazy">
+              <div class="holo-overlay"></div>
+              <div class="holo-scan"></div>
+            </div>
+            {% endif %}
+            <div class="holo-label">
+              <span class="holo-dot"></span>
+              <span class="holo-title">{{ post.title | default: post.slug | truncate: 20, "" }}</span>
+            </div>
+            {% if post.category %}
+            <div class="holo-meta">{{ post.category | split: ", " | first }}</div>
+            {% endif %}
+          </a>
+        </div>
+      {% endfor %}
+
+      <!-- ─────────────────────────────────
+           IDENTITY NODE — hexagon, violet
+           Position: (0, +205px) from center
+      ───────────────────────────────── -->
+      <div class="graph-node z-20 node-category" id="node-identity" data-x="0" data-y="205"
+           style="transform: translate(-50%, calc(-50% + 205px));">
+        <a href="/about/" class="relative group block" title="About / Identity" style="cursor: pointer;">
+          <div class="w-16 h-16 hexagon flex items-center justify-center
+                      transition-all duration-300 group-hover:scale-110 group-hover:glow-violet"
+               style="background: rgba(155,93,229,0.15);">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#9b5de5" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+            </svg>
+          </div>
+          <div class="absolute left-1/2 text-[9px] uppercase tracking-[0.18em] whitespace-nowrap text-glow-violet"
+               style="bottom: -1.75rem; transform: translateX(-50%); color: #9b5de5;">IDENTITY</div>
+        </a>
+      </div>
+
+      <!-- IDENTITY leaves -->
+      <div class="graph-node z-20 leaf-node" data-parent="identity"
+           style="transform: translate(calc(-50% - 165px), calc(-50% + 310px));">
+        <a href="/about/"
+           class="glass-panel flex items-center gap-2 px-3 py-2 transition-all duration-200 group"
+           style="border: 1px solid rgba(155,93,229,0.2); min-width: 8rem;">
+          <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: #9b5de5;"></span>
+          <span class="text-[11px] text-on-dim whitespace-nowrap">about.md</span>
+        </a>
+      </div>
+
+      <div class="graph-node z-20 leaf-node" data-parent="identity"
+           style="transform: translate(calc(-50% + 110px), calc(-50% + 310px));">
+        <a href="mailto:{{ site.email }}"
+           class="glass-panel flex items-center gap-2 px-3 py-2 transition-all duration-200 group"
+           style="border: 1px solid rgba(155,93,229,0.2); min-width: 8rem;">
+          <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: #9b5de5;"></span>
+          <span class="text-[11px] text-on-dim whitespace-nowrap">contact.sh</span>
+        </a>
+      </div>
+
+    </div><!-- /nodes-container -->
+  </main>
+
+  <!-- ═══════════════════════════════════════
+       MOBILE: simple nav fallback
+  ═══════════════════════════════════════ -->
+  <main id="mobile-nav" class="flex-col px-6 pt-24 pb-24 min-h-screen" style="display:none;">
+    <div class="mb-8">
+      <div class="text-primary font-bold text-xl uppercase tracking-tight glitch mb-1">
+        {{ site.title | upcase | replace: " ", "_" }}
+      </div>
+      <div class="text-[11px] text-muted uppercase tracking-widest">data_analyst · transportation</div>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Projects -->
+      <div>
+        <div class="text-[10px] text-primary uppercase tracking-[0.18em] mb-3 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-primary"></span>PROJECTS
+        </div>
+        <div class="space-y-2 pl-4">
+          {% for post in main_posts %}
+          <a href="{{ post.url }}"
+             class="glass-panel flex items-center gap-2 px-3 py-2 block"
+             style="border: 1px solid rgba(0,220,230,0.15);">
+            <span class="text-[12px] text-on-dim">{{ post.title | default: post.slug }}</span>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Logs -->
+      <div>
+        <div class="text-[10px] uppercase tracking-[0.18em] mb-3 flex items-center gap-2"
+             style="color: #ff0090;">
+          <span class="w-2 h-2 rounded-full" style="background:#ff0090;"></span>LOGS
+        </div>
+        <div class="space-y-2 pl-4">
+          {% for post in misc_posts %}
+          <a href="{{ post.url }}"
+             class="glass-panel flex items-center gap-2 px-3 py-2 block"
+             style="border: 1px solid rgba(255,0,144,0.15);">
+            <span class="text-[12px] text-on-dim">{{ post.title | default: post.slug }}</span>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Identity -->
+      <div>
+        <div class="text-[10px] uppercase tracking-[0.18em] mb-3 flex items-center gap-2"
+             style="color: #9b5de5;">
+          <span class="w-2 h-2 rounded-full" style="background:#9b5de5;"></span>IDENTITY
+        </div>
+        <div class="space-y-2 pl-4">
+          <a href="/about/"
+             class="glass-panel flex items-center gap-2 px-3 py-2 block"
+             style="border: 1px solid rgba(155,93,229,0.2);">
+            <span class="text-[12px] text-on-dim">about.md</span>
+          </a>
+          <a href="mailto:{{ site.email }}"
+             class="glass-panel flex items-center gap-2 px-3 py-2 block"
+             style="border: 1px solid rgba(155,93,229,0.2);">
+            <span class="text-[12px] text-on-dim">contact.sh</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
 
   {% include footer.html %}
-  {% include modals.html %}
-  {% include js.html %}
-</body>
 
+  <!-- ═══════════════════════════════════════
+       GRAPH JAVASCRIPT
+  ═══════════════════════════════════════ -->
+  <script>
+  (function () {
+    const svg       = document.getElementById('graph-svg');
+    const linesG    = document.getElementById('graph-lines');
+    const container = document.getElementById('nodes-container');
+
+    if (!linesG || !container) return;
+
+    function centerOf(el) {
+      const r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    }
+
+    function makeLine(x1, y1, x2, y2, color, width, dash) {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+      line.setAttribute('stroke', color);
+      line.setAttribute('stroke-width', width || '1');
+      if (dash) {
+        line.setAttribute('stroke-dasharray', dash);
+        const anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        anim.setAttribute('attributeName', 'stroke-dashoffset');
+        anim.setAttribute('from', '200'); anim.setAttribute('to', '0');
+        anim.setAttribute('dur', '5s'); anim.setAttribute('repeatCount', 'indefinite');
+        line.appendChild(anim);
+      }
+      return line;
+    }
+
+    function updateLines() {
+      linesG.innerHTML = '';
+      const root     = document.getElementById('node-root');
+      const projects = document.getElementById('node-projects');
+      const logs     = document.getElementById('node-logs');
+      const identity = document.getElementById('node-identity');
+      if (!root || !projects || !logs || !identity) return;
+
+      const rc = centerOf(root);
+      const pc = centerOf(projects);
+      const lc = centerOf(logs);
+      const ic = centerOf(identity);
+
+      // Primary edges (animated dash)
+      linesG.appendChild(makeLine(rc.x, rc.y, pc.x, pc.y, 'rgba(0,220,230,0.35)',  '1', '8,5'));
+      linesG.appendChild(makeLine(rc.x, rc.y, lc.x, lc.y, 'rgba(255,0,144,0.35)', '1', '8,5'));
+      linesG.appendChild(makeLine(rc.x, rc.y, ic.x, ic.y, 'rgba(155,93,229,0.35)','1', '8,5'));
+
+      // Leaf edges (static, dimmer)
+      document.querySelectorAll('.leaf-node[data-parent="projects"]').forEach(n => {
+        const c = centerOf(n);
+        linesG.appendChild(makeLine(pc.x, pc.y, c.x, c.y, 'rgba(0,220,230,0.12)', '0.75'));
+      });
+      document.querySelectorAll('.leaf-node[data-parent="logs"]').forEach(n => {
+        const c = centerOf(n);
+        linesG.appendChild(makeLine(lc.x, lc.y, c.x, c.y, 'rgba(255,0,144,0.12)', '0.75'));
+      });
+      document.querySelectorAll('.leaf-node[data-parent="identity"]').forEach(n => {
+        const c = centerOf(n);
+        linesG.appendChild(makeLine(ic.x, ic.y, c.x, c.y, 'rgba(155,93,229,0.15)', '0.75'));
+      });
+    }
+
+    // Smooth lerp parallax — nodes drift toward cursor (inverted direction)
+    var targetX = 0, targetY = 0, curX = 0, curY = 0;
+
+    document.addEventListener('mousemove', function (e) {
+      var maxDrift = Math.min(window.innerWidth, window.innerHeight) * 0.35;
+      targetX = Math.max(-maxDrift, Math.min(maxDrift, -(e.clientX - window.innerWidth  / 2) * 0.5));
+      targetY = Math.max(-maxDrift, Math.min(maxDrift, -(e.clientY - window.innerHeight / 2) * 0.5));
+
+      document.body.style.backgroundImage =
+        'radial-gradient(ellipse at ' + (e.clientX / window.innerWidth  * 100).toFixed(1) + '% ' +
+        (e.clientY / window.innerHeight * 100).toFixed(1) + '%, rgba(0,220,230,0.03) 0%, transparent 55%)';
+    });
+
+    (function tick() {
+      var dx = (targetX - curX) * 0.09;
+      var dy = (targetY - curY) * 0.09;
+      if (Math.abs(dx) > 0.02 || Math.abs(dy) > 0.02) {
+        curX += dx;
+        curY += dy;
+        container.style.transform = 'translate(' + curX.toFixed(2) + 'px, ' + curY.toFixed(2) + 'px)';
+        updateLines();
+      }
+      requestAnimationFrame(tick);
+    })();
+
+    window.addEventListener('resize', updateLines);
+    setTimeout(updateLines, 200);
+
+    // ── Leaf repulsion on hover ──────────────────────────────────────
+    var leaves = Array.from(document.querySelectorAll('.leaf-node'));
+    leaves.forEach(function(el) { el.dataset.baseTransform = el.style.transform; });
+
+    leaves.forEach(function(hovered) {
+      hovered.addEventListener('mouseenter', function() {
+        hovered.style.zIndex = 30;
+        var hRect = hovered.getBoundingClientRect();
+        var hCX   = hRect.left + hRect.width  / 2;
+        var hCY   = hRect.top  + hRect.height / 2;
+
+        leaves.forEach(function(other) {
+          if (other === hovered) return;
+          var oRect = other.getBoundingClientRect();
+          var oCX   = oRect.left + oRect.width  / 2;
+          var oCY   = oRect.top  + oRect.height / 2;
+          var dx    = oCX - hCX;
+          var dy    = oCY - hCY;
+          var dist  = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 240 && dist > 1) {
+            var mag = 90 * (240 - dist) / 240;
+            other.style.transform = other.dataset.baseTransform
+              + ' translate(' + ((dx / dist) * mag).toFixed(1) + 'px,'
+              + ((dy / dist) * mag).toFixed(1) + 'px)';
+          }
+        });
+      });
+
+      hovered.addEventListener('mouseleave', function() {
+        hovered.style.zIndex = '';
+        leaves.forEach(function(other) { other.style.transform = other.dataset.baseTransform; });
+        setTimeout(updateLines, 420);
+      });
+    });
+  })();
+  </script>
+
+</body>
 </html>

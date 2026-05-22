@@ -9,7 +9,7 @@
       </div>
       <div class="row">
         <div class="col-lg-12 text-center">
-            {% assign linkedin = site.social | where: "title", "linkedin"% | first %}
+            {% assign linkedin = site.social_links | where: "title", "linkedin" | first %}
             {% if linkedin %}
                 <h3><a href="{{linkedin.url}}">LinkedIn</a></h3>
             {% endif %}

@@ -1,48 +1,42 @@
 <!-- Footer -->
-<footer class="text-center">
-  <div class="footer-above">
-    <div class="container">
-      <div class="row">
-        <div class="footer-col col-md-4">
-          <h3>{{ site.footer.location }}</h3>
-          <p>
-            {% for adress in site.address %}
-            {{ adress.line }} <br>
-            {% endfor %}
-          </p>
-        </div>
-        <div class="footer-col col-md-4">
-          <h3>{{ site.footer.social }}</h3>
-          <ul class="list-inline">
-            {% for network in site.social %}
-            <li>
-              <a href="{{ network.url }}" class="btn-social btn-outline"><i
-                  class="fa-brands fa-fw fa-{{ network.title }}"></i></a>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-        <div class="footer-col col-md-4">
-          <h3>{{ site.footer.credits }}</h3>
-          <p>{{ site.credits }}</p>
-        </div>
-      </div>
+<footer class="fixed bottom-0 left-0 right-0 z-40 hidden md:block"
+        style="background: rgba(10,10,11,0.9); backdrop-filter: blur(16px); border-top: 1px solid rgba(0,220,230,0.08);">
+  <div class="flex justify-between items-center px-6 py-3 max-w-7xl mx-auto">
+
+    <div class="flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+      <span class="text-[10px] text-muted uppercase tracking-widest">UPLINK_ONLINE</span>
     </div>
-  </div>
-  <div class="footer-below">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          Copyright &copy; {{ site.footer.copyright }} 20{{ site.time | date: '%y' }}
-        </div>
-      </div>
+
+    <div class="text-[10px] text-muted uppercase tracking-widest">
+      © {{ site.time | date: '%Y' }}_{{ site.footer.copyright | upcase | replace: " ", "_" }}
     </div>
+
+    <div class="flex items-center gap-5">
+      {% for network in site.social_links %}
+      <a href="{{ network.url }}" target="_blank" rel="noopener"
+         class="text-[10px] text-muted hover:text-primary transition-colors uppercase tracking-widest">
+        {{ network.title | upcase }}
+      </a>
+      {% endfor %}
+    </div>
+
   </div>
 </footer>
 
-<!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-<div class="scroll-top page-scroll visible-xs visible-sm">
-  <a class="btn btn-primary" href="#page-top">
-    <i class="fa fa-chevron-up"></i>
-  </a>
-</div>
+<!-- Mobile footer (non-fixed, visible in scroll flow) -->
+<footer class="md:hidden" style="border-top: 1px solid rgba(0,220,230,0.08); background: rgba(10,10,11,0.95);">
+  <div class="flex flex-col items-center gap-3 px-6 py-6">
+    <div class="flex gap-6">
+      {% for network in site.social_links %}
+      <a href="{{ network.url }}" target="_blank" rel="noopener"
+         class="text-[11px] text-muted hover:text-primary transition-colors uppercase tracking-widest">
+        {{ network.title | upcase }}
+      </a>
+      {% endfor %}
+    </div>
+    <div class="text-[10px] text-muted uppercase tracking-widest">
+      © {{ site.time | date: '%Y' }} {{ site.footer.copyright }}
+    </div>
+  </div>
+</footer>
