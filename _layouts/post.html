@@ -89,7 +89,16 @@
           </div>
         </div>
 
-        <div class="flex-shrink-0">
+        <div class="flex items-center gap-3 flex-shrink-0">
+          {% if page.project_url %}
+          <a href="{{ page.project_url }}" target="_blank" rel="noopener"
+             class="glass-panel flex items-center gap-2 px-5 py-2.5 text-[11px] uppercase tracking-widest
+                    transition-all duration-200"
+             style="border: 1px solid rgba(0,220,230,0.35); color: #00dce6;
+                    box-shadow: 0 0 10px rgba(0,220,230,0.15);">
+            ↗ VISIT_SITE
+          </a>
+          {% endif %}
           <a href="/" class="glass-panel flex items-center gap-2 px-5 py-2.5 text-[11px] uppercase tracking-widest
                              text-primary hover:bg-primary/10 transition-all duration-200"
              style="border: 1px solid rgba(0,220,230,0.2);">

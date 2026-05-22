@@ -123,31 +123,39 @@
 
       <!-- PROJECTS leaf nodes -->
       {% assign main_posts = site.posts | where: "type", "main" | sort: "date" | reverse %}
-      {% for post in main_posts limit: 4 %}
+      {% for post in main_posts limit: 6 %}
         {% assign i = forloop.index0 %}
-        {% if i == 0 %}{% assign lx = "calc(-50% - 480px)" %}{% assign ly = "calc(-50% - 60px)" %}{% endif %}
-        {% if i == 1 %}{% assign lx = "calc(-50% - 460px)" %}{% assign ly = "calc(-50% - 165px)" %}{% endif %}
-        {% if i == 2 %}{% assign lx = "calc(-50% - 400px)" %}{% assign ly = "calc(-50% - 255px)" %}{% endif %}
-        {% if i == 3 %}{% assign lx = "calc(-50% - 300px)" %}{% assign ly = "calc(-50% - 300px)" %}{% endif %}
+        {% if i == 0 %}{% assign lx = "calc(-50% - 490px)" %}{% assign ly = "calc(-50% - 20px)" %}{% endif %}
+        {% if i == 1 %}{% assign lx = "calc(-50% - 500px)" %}{% assign ly = "calc(-50% - 145px)" %}{% endif %}
+        {% if i == 2 %}{% assign lx = "calc(-50% - 460px)" %}{% assign ly = "calc(-50% - 255px)" %}{% endif %}
+        {% if i == 3 %}{% assign lx = "calc(-50% - 370px)" %}{% assign ly = "calc(-50% - 325px)" %}{% endif %}
+        {% if i == 4 %}{% assign lx = "calc(-50% - 240px)" %}{% assign ly = "calc(-50% - 345px)" %}{% endif %}
+        {% if i == 5 %}{% assign lx = "calc(-50% - 105px)" %}{% assign ly = "calc(-50% - 320px)" %}{% endif %}
         <div class="graph-node z-20 leaf-node" data-parent="projects"
              style="transform: translate({{ lx }}, {{ ly }});">
-          <a href="{{ post.url }}" class="holo-leaf">
-            {% if post.img %}
-            <div class="holo-img-wrap">
-              <img src="{{ '/img/portfolio/' | append: post.img | relative_url }}"
-                   alt="{{ post.title }}" class="holo-img" loading="lazy">
-              <div class="holo-overlay"></div>
-              <div class="holo-scan"></div>
-            </div>
+          <div class="holo-leaf{% if post.featured %} holo-leaf--featured{% endif %}">
+            <a href="{{ post.url }}" class="holo-leaf-link">
+              {% if post.img %}
+              <div class="holo-img-wrap">
+                <img src="{{ '/img/portfolio/' | append: post.img | relative_url }}"
+                     alt="{{ post.title }}" class="holo-img" loading="lazy">
+                <div class="holo-overlay"></div>
+                <div class="holo-scan"></div>
+              </div>
+              {% endif %}
+              <div class="holo-label">
+                <span class="holo-dot"></span>
+                <span class="holo-title">{{ post.title | default: post.slug | truncate: 20, "" }}</span>
+                {% if post.featured %}<span class="holo-featured-star">★</span>{% endif %}
+              </div>
+              {% if post.category %}
+              <div class="holo-meta">{{ post.category | split: ", " | first }}</div>
+              {% endif %}
+            </a>
+            {% if post.project_url %}
+            <a href="{{ post.project_url }}" target="_blank" rel="noopener" class="holo-live-btn">↗ open site</a>
             {% endif %}
-            <div class="holo-label">
-              <span class="holo-dot"></span>
-              <span class="holo-title">{{ post.title | default: post.slug | truncate: 20, "" }}</span>
-            </div>
-            {% if post.category %}
-            <div class="holo-meta">{{ post.category | split: ", " | first }}</div>
-            {% endif %}
-          </a>
+          </div>
         </div>
       {% endfor %}
 
@@ -328,23 +336,28 @@
       </div>
       <div class="panel-body">
         {% for post in main_posts %}
-        <a href="{{ post.url }}" class="panel-row">
-          {% if post.img %}
-          <div class="panel-row-thumb">
-            <img src="{{ '/img/portfolio/' | append: post.img | relative_url }}"
-                 alt="{{ post.title }}" loading="lazy">
-            <div class="holo-overlay"></div>
-            <div class="holo-scan"></div>
-          </div>
-          {% endif %}
-          <div class="panel-row-info">
-            <div class="panel-row-name">{{ post.title | default: post.slug }}</div>
-            <div class="panel-row-meta">
-              {{ post.date | date: "%Y" }}{% if post.category %} · {{ post.category | split: ", " | first }}{% endif %}
+        <div class="panel-row">
+          <a href="{{ post.url }}" class="panel-row-link">
+            {% if post.img %}
+            <div class="panel-row-thumb">
+              <img src="{{ '/img/portfolio/' | append: post.img | relative_url }}"
+                   alt="{{ post.title }}" loading="lazy">
+              <div class="holo-overlay"></div>
+              <div class="holo-scan"></div>
             </div>
-          </div>
-          <span class="panel-row-arrow">→</span>
-        </a>
+            {% endif %}
+            <div class="panel-row-info">
+              <div class="panel-row-name">{{ post.title | default: post.slug }}</div>
+              <div class="panel-row-meta">
+                {{ post.date | date: "%Y" }}{% if post.category %} · {{ post.category | split: ", " | first }}{% endif %}
+              </div>
+            </div>
+            <span class="panel-row-arrow">→</span>
+          </a>
+          {% if post.project_url %}
+          <a href="{{ post.project_url }}" target="_blank" rel="noopener" class="panel-row-live" title="Open live site">↗</a>
+          {% endif %}
+        </div>
         {% unless forloop.last %}<div class="panel-divider"></div>{% endunless %}
         {% endfor %}
       </div>
@@ -360,23 +373,28 @@
       </div>
       <div class="panel-body">
         {% for post in misc_posts %}
-        <a href="{{ post.url }}" class="panel-row">
-          {% if post.img %}
-          <div class="panel-row-thumb">
-            <img src="{{ '/img/portfolio/' | append: post.img | relative_url }}"
-                 alt="{{ post.title }}" loading="lazy">
-            <div class="holo-overlay"></div>
-            <div class="holo-scan"></div>
-          </div>
-          {% endif %}
-          <div class="panel-row-info">
-            <div class="panel-row-name">{{ post.title | default: post.slug }}</div>
-            <div class="panel-row-meta">
-              {{ post.date | date: "%Y" }}{% if post.category %} · {{ post.category | split: ", " | first }}{% endif %}
+        <div class="panel-row">
+          <a href="{{ post.url }}" class="panel-row-link">
+            {% if post.img %}
+            <div class="panel-row-thumb">
+              <img src="{{ '/img/portfolio/' | append: post.img | relative_url }}"
+                   alt="{{ post.title }}" loading="lazy">
+              <div class="holo-overlay"></div>
+              <div class="holo-scan"></div>
             </div>
-          </div>
-          <span class="panel-row-arrow">→</span>
-        </a>
+            {% endif %}
+            <div class="panel-row-info">
+              <div class="panel-row-name">{{ post.title | default: post.slug }}</div>
+              <div class="panel-row-meta">
+                {{ post.date | date: "%Y" }}{% if post.category %} · {{ post.category | split: ", " | first }}{% endif %}
+              </div>
+            </div>
+            <span class="panel-row-arrow">→</span>
+          </a>
+          {% if post.project_url %}
+          <a href="{{ post.project_url }}" target="_blank" rel="noopener" class="panel-row-live" title="Open live site">↗</a>
+          {% endif %}
+        </div>
         {% unless forloop.last %}<div class="panel-divider"></div>{% endunless %}
         {% endfor %}
       </div>

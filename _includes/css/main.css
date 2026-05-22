@@ -281,13 +281,32 @@ body.graph-page {
 .panel-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 10px 18px;
-  text-decoration: none;
   transition: background 0.15s;
 }
 .panel-row:hover { background: rgba(0, 220, 230, 0.05); }
 .node-panel-card--logs .panel-row:hover { background: rgba(255, 0, 144, 0.05); }
+.panel-row-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px;
+  flex: 1;
+  min-width: 0;
+  text-decoration: none;
+}
+.panel-row-live {
+  flex-shrink: 0;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #849495;
+  border-left: 1px solid rgba(0, 220, 230, 0.08);
+  transition: color 0.15s, background 0.15s;
+  text-decoration: none;
+  line-height: 1;
+}
+.panel-row-live:hover { color: #00dce6; background: rgba(0, 220, 230, 0.06); }
+.node-panel-card--logs .panel-row-live { border-left-color: rgba(255, 0, 144, 0.08); }
+.node-panel-card--logs .panel-row-live:hover { color: #ff0090; background: rgba(255, 0, 144, 0.06); }
 
 .panel-row-thumb {
   position: relative;
@@ -303,7 +322,7 @@ body.graph-page {
   filter: saturate(0.15) brightness(0.55) contrast(1.15);
   transition: filter 0.3s;
 }
-.panel-row:hover .panel-row-thumb img {
+.panel-row-link:hover .panel-row-thumb img {
   filter: saturate(0.4) brightness(0.72);
 }
 .panel-row-thumb::before,
@@ -343,8 +362,8 @@ body.graph-page {
   transition: color 0.15s;
   margin-bottom: 4px;
 }
-.panel-row:hover .panel-row-name     { color: #00dce6; }
-.node-panel-card--logs .panel-row:hover .panel-row-name { color: #ff0090; }
+.panel-row-link:hover .panel-row-name     { color: #00dce6; }
+.node-panel-card--logs .panel-row-link:hover .panel-row-name { color: #ff0090; }
 .panel-row-meta {
   font-size: 9px;
   color: #849495;
@@ -360,8 +379,8 @@ body.graph-page {
   flex-shrink: 0;
   transition: color 0.15s, transform 0.15s;
 }
-.panel-row:hover .panel-row-arrow     { color: #00dce6; transform: translateX(3px); }
-.node-panel-card--logs .panel-row:hover .panel-row-arrow { color: #ff0090; }
+.panel-row-link:hover .panel-row-arrow     { color: #00dce6; transform: translateX(3px); }
+.node-panel-card--logs .panel-row-link:hover .panel-row-arrow { color: #ff0090; }
 
 .panel-divider {
   height: 1px;
@@ -388,6 +407,53 @@ body.graph-page {
   border-color: rgba(0, 220, 230, 0.65);
   box-shadow: 0 0 20px rgba(0, 220, 230, 0.22), inset 0 0 8px rgba(0, 220, 230, 0.06);
 }
+/* Featured variant — larger, brighter, always-on glow */
+.holo-leaf--featured {
+  width: 192px;
+  border-color: rgba(0, 220, 230, 0.5);
+  box-shadow: 0 0 14px rgba(0, 220, 230, 0.18), inset 0 0 6px rgba(0, 220, 230, 0.04);
+}
+.holo-leaf--featured:hover {
+  border-color: rgba(0, 220, 230, 0.9);
+  box-shadow: 0 0 32px rgba(0, 220, 230, 0.38), inset 0 0 12px rgba(0, 220, 230, 0.08);
+}
+.holo-leaf--featured .holo-img-wrap {
+  height: 110px;
+}
+.holo-leaf--featured .holo-img {
+  filter: saturate(0.22) brightness(0.65) contrast(1.12);
+}
+.holo-leaf--featured:hover .holo-img {
+  filter: saturate(0.45) brightness(0.8) contrast(1.08);
+}
+.holo-featured-star {
+  font-size: 9px;
+  color: #00dce6;
+  flex-shrink: 0;
+  margin-left: auto;
+  text-shadow: 0 0 6px rgba(0, 220, 230, 0.7);
+}
+.holo-leaf-link {
+  display: block;
+  text-decoration: none;
+}
+.holo-live-btn {
+  display: block;
+  text-align: center;
+  font-size: 8px;
+  color: #00dce6;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 5px 8px;
+  border-top: 1px solid rgba(0, 220, 230, 0.15);
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+}
+.holo-live-btn:hover {
+  background: rgba(0, 220, 230, 0.1);
+  color: #e0e2e8;
+}
+
 .holo-leaf--logs {
   border-color: rgba(255, 0, 144, 0.22);
 }
