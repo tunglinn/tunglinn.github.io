@@ -104,11 +104,10 @@
       ───────────────────────────────── -->
       <div class="graph-node z-20 node-category" id="node-projects" data-x="-290" data-y="-115"
            style="transform: translate(calc(-50% - 290px), calc(-50% - 115px));">
-        <div class="relative group cursor-pointer" title="Projects">
+        <div class="relative group cursor-pointer" id="btn-projects" title="Click to view project list">
           <div class="w-16 h-16 rounded-full border-2 border-primary flex items-center justify-center
                       transition-all duration-300 group-hover:scale-110 group-hover:glow-cyan"
                style="background: rgba(0,220,230,0.06);">
-            <!-- folder / code icon -->
             <svg class="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path stroke-linecap="round" stroke-linejoin="round"
                     d="M2 6a2 2 0 012-2h5l2 2h9a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
@@ -116,6 +115,9 @@
           </div>
           <div class="absolute left-1/2 text-[9px] text-primary uppercase tracking-[0.18em] whitespace-nowrap text-glow-cyan"
                style="top: -1.75rem; transform: translateX(-50%);">PROJECTS</div>
+          <div class="absolute left-1/2 text-[8px] text-muted uppercase tracking-widest whitespace-nowrap
+                      opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+               style="bottom: -1.75rem; transform: translateX(-50%);">▾ list</div>
         </div>
       </div>
 
@@ -155,11 +157,10 @@
       ───────────────────────────────── -->
       <div class="graph-node z-20 node-category" id="node-logs" data-x="295" data-y="-85"
            style="transform: translate(calc(-50% + 295px), calc(-50% - 85px));">
-        <div class="relative group cursor-pointer" title="Logs">
+        <div class="relative group cursor-pointer" id="btn-logs" title="Click to view log list">
           <div class="w-16 h-16 border-2 flex items-center justify-center
                       transition-all duration-300 group-hover:scale-110"
                style="border-color: #ff0090; background: rgba(255,0,144,0.06);">
-            <!-- terminal / log icon -->
             <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#ff0090" stroke-width="1.5">
               <path stroke-linecap="round" stroke-linejoin="round"
                     d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"/>
@@ -167,6 +168,9 @@
           </div>
           <div class="absolute left-1/2 text-[9px] uppercase tracking-[0.18em] whitespace-nowrap text-glow-magenta"
                style="top: -1.75rem; transform: translateX(-50%); color: #ff0090;">LOGS</div>
+          <div class="absolute left-1/2 text-[8px] text-muted uppercase tracking-widest whitespace-nowrap
+                      opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+               style="bottom: -1.75rem; transform: translateX(-50%);">▾ list</div>
         </div>
       </div>
 
@@ -311,6 +315,74 @@
     </div>
   </main>
 
+  <!-- ═══════════════════════════════════════
+       NODE LIST PANELS
+  ═══════════════════════════════════════ -->
+
+  <!-- PROJECTS panel -->
+  <div id="panel-projects" class="node-panel" hidden>
+    <div class="node-panel-card" role="dialog" aria-modal="true">
+      <div class="panel-hdr">
+        <span class="panel-hdr-title">// projects — {{ main_posts | size }} records</span>
+        <button class="panel-hdr-close" data-close-panel="panel-projects" aria-label="Close">✕</button>
+      </div>
+      <div class="panel-body">
+        {% for post in main_posts %}
+        <a href="{{ post.url }}" class="panel-row">
+          {% if post.img %}
+          <div class="panel-row-thumb">
+            <img src="{{ '/img/portfolio/' | append: post.img | relative_url }}"
+                 alt="{{ post.title }}" loading="lazy">
+            <div class="holo-overlay"></div>
+            <div class="holo-scan"></div>
+          </div>
+          {% endif %}
+          <div class="panel-row-info">
+            <div class="panel-row-name">{{ post.title | default: post.slug }}</div>
+            <div class="panel-row-meta">
+              {{ post.date | date: "%Y" }}{% if post.category %} · {{ post.category | split: ", " | first }}{% endif %}
+            </div>
+          </div>
+          <span class="panel-row-arrow">→</span>
+        </a>
+        {% unless forloop.last %}<div class="panel-divider"></div>{% endunless %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGS panel -->
+  <div id="panel-logs" class="node-panel" hidden>
+    <div class="node-panel-card node-panel-card--logs" role="dialog" aria-modal="true">
+      <div class="panel-hdr">
+        <span class="panel-hdr-title">// logs — {{ misc_posts | size }} records</span>
+        <button class="panel-hdr-close" data-close-panel="panel-logs" aria-label="Close">✕</button>
+      </div>
+      <div class="panel-body">
+        {% for post in misc_posts %}
+        <a href="{{ post.url }}" class="panel-row">
+          {% if post.img %}
+          <div class="panel-row-thumb">
+            <img src="{{ '/img/portfolio/' | append: post.img | relative_url }}"
+                 alt="{{ post.title }}" loading="lazy">
+            <div class="holo-overlay"></div>
+            <div class="holo-scan"></div>
+          </div>
+          {% endif %}
+          <div class="panel-row-info">
+            <div class="panel-row-name">{{ post.title | default: post.slug }}</div>
+            <div class="panel-row-meta">
+              {{ post.date | date: "%Y" }}{% if post.category %} · {{ post.category | split: ", " | first }}{% endif %}
+            </div>
+          </div>
+          <span class="panel-row-arrow">→</span>
+        </a>
+        {% unless forloop.last %}<div class="panel-divider"></div>{% endunless %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
   {% include footer.html %}
 
   <!-- ═══════════════════════════════════════
@@ -381,8 +453,10 @@
 
     // Smooth lerp parallax — nodes drift toward cursor (inverted direction)
     var targetX = 0, targetY = 0, curX = 0, curY = 0;
+    var panelOpen = false;
 
     document.addEventListener('mousemove', function (e) {
+      if (panelOpen) return;
       var maxDrift = Math.min(window.innerWidth, window.innerHeight) * 0.35;
       targetX = Math.max(-maxDrift, Math.min(maxDrift, -(e.clientX - window.innerWidth  / 2) * 0.5));
       targetY = Math.max(-maxDrift, Math.min(maxDrift, -(e.clientY - window.innerHeight / 2) * 0.5));
@@ -406,6 +480,38 @@
 
     window.addEventListener('resize', updateLines);
     setTimeout(updateLines, 200);
+
+    // ── Category node panels ─────────────────────────────────────────
+    function openPanel(id) {
+      var p = document.getElementById(id);
+      if (!p) return;
+      panelOpen = true;
+      targetX = curX; targetY = curY;   // freeze drift where it is
+      p.removeAttribute('hidden');
+      p.querySelector('.node-panel-card').style.animation = 'none';
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          p.querySelector('.node-panel-card').style.animation = '';
+        });
+      });
+    }
+    function closeAll() {
+      panelOpen = false;
+      document.querySelectorAll('.node-panel').forEach(function(p) { p.setAttribute('hidden', ''); });
+    }
+
+    var btnP = document.getElementById('btn-projects');
+    var btnL = document.getElementById('btn-logs');
+    if (btnP) btnP.addEventListener('click', function(e) { e.stopPropagation(); openPanel('panel-projects'); });
+    if (btnL) btnL.addEventListener('click', function(e) { e.stopPropagation(); openPanel('panel-logs'); });
+
+    document.querySelectorAll('[data-close-panel]').forEach(function(btn) {
+      btn.addEventListener('click', function() { closeAll(); });
+    });
+    document.querySelectorAll('.node-panel').forEach(function(p) {
+      p.addEventListener('click', function(e) { if (e.target === p) closeAll(); });
+    });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAll(); });
 
     // ── Leaf repulsion on hover ──────────────────────────────────────
     var leaves = Array.from(document.querySelectorAll('.leaf-node'));
